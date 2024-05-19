@@ -12,10 +12,10 @@ namespace BloodCare.API.Extensions
 
             builder.Services.AddSwaggerGen(s =>
             {
-                s.SwaggerDoc("v2", new OpenApiInfo
+                s.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "BloodCare.API",
-                    Version = "v2",
+                    Version = "v1",
                     Contact = new OpenApiContact
                     {
                         Name = "Gabriel Pedroza",

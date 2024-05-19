@@ -1,10 +1,11 @@
 ﻿using BloodCare.Domain.Base;
+using BloodCare.Domain.Enums;
 
 namespace BloodCare.Domain.Entities
 {
-    internal class Donor : BaseEntity
+    public class Donor : BaseEntity
     {
-        public Donor(string fullName, string email, DateTime dateOfBirth, string gender, double weight, string bloodType, string rhFactor, List<Donation> donations)
+        public Donor(string fullName, string email, DateTime dateOfBirth, string gender, double weight, BloodType bloodType, RhFactor rhFactor, Address address)
         {
             FullName = fullName;
             Email = email;
@@ -13,7 +14,10 @@ namespace BloodCare.Domain.Entities
             Weight = weight;
             BloodType = bloodType;
             RhFactor = rhFactor;
-            Donations = donations;
+            Address = address;
+
+            CreatedAt = DateTime.Now;
+            Situation = DonorSituation.Active; 
         }
 
         public string FullName { get; private set; }
@@ -21,8 +25,10 @@ namespace BloodCare.Domain.Entities
         public DateTime DateOfBirth { get; private set; }
         public string Gender { get; private set; }
         public double Weight { get; private set; }
-        public string BloodType { get; private set; }
-        public string RhFactor { get; private set; }
+        public BloodType BloodType { get; private set; }
+        public RhFactor RhFactor { get; private set; }
+        public Address Address { get; private set; }
+        public DonorSituation Situation { get; private set; }
         public List<Donation> Donations { get; private set; }
     }
 }
