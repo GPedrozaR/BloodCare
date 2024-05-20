@@ -1,6 +1,4 @@
-﻿using Microsoft.OpenApi.Models;
-
-namespace BloodCare.API.Extensions
+﻿namespace BloodCare.API.Extensions
 {
     public static class ServiceConfiguration
     {
@@ -25,8 +23,21 @@ namespace BloodCare.API.Extensions
                 });
             });
 
+            
+
             return builder;
         }
+
+        public static IServiceCollection ConfigureDataBase(this WebApplicationBuilder builder)
+        {
+            var section = builder.Configuration.GetSection("MongoDB");
+            builder
+                .Services
+                .Configure<MongoConfig>(section);
+
+            return builder.Services;
+        }
+
 
     }
 }

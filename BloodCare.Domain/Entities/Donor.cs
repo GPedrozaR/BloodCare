@@ -20,6 +20,11 @@ namespace BloodCare.Domain.Entities
             Situation = DonorSituation.Active; 
         }
 
+        public Donor()
+        {
+            
+        }
+
         public string FullName { get; private set; }
         public string Email { get; private set; }
         public DateTime DateOfBirth { get; private set; }
