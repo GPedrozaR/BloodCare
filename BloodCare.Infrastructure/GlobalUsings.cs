@@ -1,3 +1,3 @@
-﻿global using BloodCare.Domain.Entities;
-global using Microsoft.EntityFrameworkCore;
-global using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿global using BloodCare.Domain.Repositories;
+global using BloodCare.Domain.Entities;
+global using MongoDB.Driver;
