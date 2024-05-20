@@ -13,7 +13,10 @@ namespace BloodCare.Domain.Base
         [BsonId]
         public ObjectId Id { get; protected set; }
 
+        [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         public DateTime CreatedAt { get; protected set; }
+
+        [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         public DateTime UpdatedAt { get; protected set; }
     }
 }
