@@ -35,9 +35,29 @@
                 .Services
                 .Configure<MongoConfig>(section);
 
+            builder.Services.AddSingleton<IMongoClient, MongoClient>(sp =>
+            {
+                var settings = sp.GetRequiredService<IOptions<MongoConfig>>().Value;
+                return new MongoClient(settings.ConnectionString);
+            });
+
+            builder.Services.AddSingleton(sp =>
+            {
+                var settings = sp.GetRequiredService<IOptions<MongoConfig>>().Value;
+                var client = sp.GetRequiredService<IMongoClient>();
+                return client.GetDatabase(settings.DataBase);
+            });
+
             return builder.Services;
         }
 
+        public static IServiceCollection ConfigureDependecyInjection(this WebApplicationBuilder builder)
+        {
+            builder.Services.AddScoped<IDonorRepository, DonorRepository>();
+            builder.Services.AddScoped<IDonationRepository, DonationRepository>();
+            builder.Services.AddScoped<IBloodStockRepository, BloodStockRepository>();
 
+            return builder.Services;
+        }
     }
 }
