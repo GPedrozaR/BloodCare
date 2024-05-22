@@ -1,9 +1,19 @@
-﻿namespace BloodCare.API.Controllers
+﻿using BloodCare.Application.Commands.Donors.CreateDonor;
+using MediatR;
+
+namespace BloodCare.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
     public class DonorsController : ControllerBase
     {
+        public DonorsController(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
+
+        private readonly IMediator _mediator;
+
         [HttpGet]
         public async Task<IActionResult> GetAllDonors(string query)
         {
@@ -17,8 +27,10 @@
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateNewDonor()
+        public async Task<IActionResult> CreateNewDonor(CreateDonorCommand command)
         {
+            var id = await _mediator.Send(command);
+
             return Ok();
         }
 

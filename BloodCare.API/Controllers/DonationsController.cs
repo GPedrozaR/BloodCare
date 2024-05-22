@@ -8,14 +8,14 @@
         public async Task<IActionResult> GetAllDonations(int id)
         {
             return Ok();
-        }        
-        
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetDonationById(int id)
         {
             return Ok();
-        }        
-        
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateNewDonation()
         {

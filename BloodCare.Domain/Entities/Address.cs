@@ -1,8 +1,6 @@
-﻿using BloodCare.Domain.Base;
-
-namespace BloodCare.Domain.Entities
+﻿namespace BloodCare.Domain.Entities
 {
-    public class Address : BaseEntity
+    public class Address
     {
         public Address(string street, string city, string state, string zipCode)
         {

@@ -7,8 +7,30 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\" />
-    <Folder Include="Queries\" />
+    <Compile Remove="Commands\BloodStock\**" />
+    <Compile Remove="Commands\Donation\**" />
+    <Compile Remove="Commands\DonorCommand\**" />
+    <EmbeddedResource Remove="Commands\BloodStock\**" />
+    <EmbeddedResource Remove="Commands\Donation\**" />
+    <EmbeddedResource Remove="Commands\DonorCommand\**" />
+    <None Remove="Commands\BloodStock\**" />
+    <None Remove="Commands\Donation\**" />
+    <None Remove="Commands\DonorCommand\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Commands\Donations\" />
+    <Folder Include="Queries\BloodStock\" />
+    <Folder Include="Queries\Donation\" />
+    <Folder Include="Queries\Donor\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BloodCare.Domain\BloodCare.Domain.csproj" />
   </ItemGroup>
 
 </Project>

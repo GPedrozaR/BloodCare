@@ -1,4 +1,6 @@
-﻿namespace BloodCare.API.Extensions
+﻿using BloodCare.Application.Commands.Donors.CreateDonor;
+
+namespace BloodCare.API.Extensions
 {
     public static class ServiceConfiguration
     {
@@ -23,7 +25,8 @@
                 });
             });
 
-            
+            builder.Services.AddMediatR(op => op.RegisterServicesFromAssemblyContaining(typeof(CreateDonorCommand)));
+
 
             return builder;
         }
