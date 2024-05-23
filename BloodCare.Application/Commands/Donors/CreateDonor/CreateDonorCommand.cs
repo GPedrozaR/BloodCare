@@ -6,12 +6,13 @@ using MediatR;
 namespace BloodCare.Application.Commands.Donors.CreateDonor
 {
     public sealed record CreateDonorCommand(
-    string FullName,
-    string Email,
-    string Gender,
-    DateTime DateOfBirth,
-    double Weight,
-    BloodType BloodType,
-    RhFactor RhFactor,
-    Address? Address) : IRequest<Result<Donor>>;
+        string FullName,
+        string Email, 
+        DateTime DateOfBirth,
+        string Cpf, 
+        string Gender,
+        double Weight, 
+        BloodType BloodType,
+        RhFactor RhFactor,
+        Address? Address) : IRequest<Result<Donor>>;
 }

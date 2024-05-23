@@ -29,8 +29,7 @@ namespace BloodCare.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateNewDonor(CreateDonorCommand command)
         {
-            var id = await _mediator.Send(command);
-
+            var result = await _mediator.Send(command);
             return Ok();
         }
 

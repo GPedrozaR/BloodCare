@@ -7,11 +7,12 @@ namespace BloodCare.Domain.Entities
 {
     public class Donor : BaseEntity
     {
-        public Donor(string fullName, string email, DateTime dateOfBirth, string gender, double weight, BloodType bloodType, RhFactor rhFactor, Address address)
+        public Donor(string fullName, string email, DateTime dateOfBirth, string cpf, string gender, double weight, BloodType bloodType, RhFactor rhFactor, Address address)
         {
             FullName = fullName;
             Email = email;
             DateOfBirth = dateOfBirth;
+            Cpf = cpf;
             Gender = gender;
             Weight = weight;
             BloodType = bloodType;
@@ -24,6 +25,7 @@ namespace BloodCare.Domain.Entities
 
         public string FullName { get; private set; }
         public string Email { get; private set; }
+        public string Cpf { get; private set; }
         public string Gender { get; private set; }
         public double Weight { get; private set; }
 
