@@ -1,3 +1,5 @@
+using BloodCare.API.Extensions;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.ConfigureServices();

@@ -1,4 +1,6 @@
-﻿namespace BloodCare.API.Controllers
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace BloodCare.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -7,7 +9,6 @@
         [HttpGet]
         public async Task<IActionResult> GetAll(int skip = 0, int take = 50)
         {
-
             return Ok();
         }
 

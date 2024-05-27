@@ -1,55 +1,71 @@
-﻿using System.Linq.Expressions;
+﻿using BloodCare.Domain.Interfaces;
+using BloodCare.Domain.Repositories;
+using MongoDB.Bson;
+using MongoDB.Driver;
+using System.Linq.Expressions;
 
 namespace BloodCare.Infrastructure.Persistence.Repositories
 {
-    public class Repository<T> : IRepository<T> where T : class
+    public class Repository<TDomain, TInfrastructure> : IRepository<TDomain>
+        where TDomain : class
+        where TInfrastructure : class
     {
-        public Repository(IMongoDatabase database, string collectionName)
+        public Repository(IMongoDatabase database, string collectionName, IMapper<TDomain, TInfrastructure> mapper)
         {
-            _collection = database.GetCollection<T>(collectionName);
+            _collection = database.GetCollection<TInfrastructure>(collectionName);
+            _mapper = mapper;
         }
 
-        private readonly IMongoCollection<T> _collection;
+        private readonly IMongoCollection<TInfrastructure> _collection;
+        private readonly IMapper<TDomain, TInfrastructure> _mapper;
 
-
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public async Task<IEnumerable<TDomain>> GetAllAsync()
         {
-            return await _collection.Find(Builders<T>.Filter.Empty).ToListAsync();
+            var entities = await _collection.Find(Builders<TInfrastructure>.Filter.Empty).ToListAsync();
+            return entities.Select(_mapper.ToDomain);
         }
 
-        public async Task<IEnumerable<T>> GetAllByQueryAsync(Expression<Func<T, bool>> filterExpression)
+        public async Task<TDomain?> GetByIdAsync(string id)
         {
-            return await _collection.Find(Builders<T>.Filter.Where(filterExpression)).ToListAsync();
+            var filter = Builders<TInfrastructure>.Filter.Eq("Id", id);
+            var entity = await _collection.Find(filter).FirstOrDefaultAsync();
+            return entity != null ? _mapper.ToDomain(entity) : null;
         }
 
-        public async Task<T> GetFirstOrDefaultByQueryAsync(Expression<Func<T, bool>> filterExpression)
+        public async Task UpsertAsync(string id, TDomain entity)
         {
-            return await _collection.Find(Builders<T>.Filter.Where(filterExpression)).FirstOrDefaultAsync();
-        }
+            var infrastructureEntity = _mapper.ToInfrastructure(entity);
 
-        public async Task<T> GetByIdAsync(string id)
-        {
-            var filter = Builders<T>.Filter.Eq("Id", id);
-            return await _collection.Find(filter).FirstOrDefaultAsync();
-        }
+            var filter = Builders<TInfrastructure>.Filter.Eq("Id", ObjectId.Parse(id));
 
-        public async Task AddAsync(T entity)
-        {
-            await _collection.InsertOneAsync(entity);
-        }
+            var options = new ReplaceOptions { IsUpsert = true };
 
-        public async Task UpdateAsync(string id, T entity)
-        {
-            var filter = Builders<T>.Filter.Eq("Id", id);
-            await _collection.ReplaceOneAsync(filter, entity);
+            await _collection.ReplaceOneAsync(filter, infrastructureEntity, options);
         }
 
         public async Task DeleteAsync(string id)
         {
-            var filter = Builders<T>.Filter.Eq("Id", id);
+            var filter = Builders<TInfrastructure>.Filter.Eq("Id", ObjectId.Parse(id));
             await _collection.DeleteOneAsync(filter);
         }
 
-        
+        public async Task<IEnumerable<TDomain>> GetAllByQueryAsync(Expression<Func<TInfrastructure, bool>>? filterExpression = null)
+        {
+            var entities = await _collection.Find(filterExpression).ToListAsync();
+
+            var domainEntities = entities.Select(_mapper.ToDomain).AsQueryable();
+            return domainEntities;
+        }
+
+        public Task<TDomain> GetFirstOrDefault(Expression<Func<TDomain, bool>>? filterExpression = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<IEnumerable<TDomain>> GetAllByQueryAsync(Expression<Func<TDomain, bool>>? filterExpression = null)
+        {
+            var cursor = await _collection.Find(filterExpression).ToListAsync();
+            return cursor.Select(_mapper.ToDomain);
+        }
     }
 }

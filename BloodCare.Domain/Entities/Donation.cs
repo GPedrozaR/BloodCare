@@ -1,20 +1,24 @@
 ﻿using BloodCare.Domain.Base;
+using MongoDB.Bson;
 
 namespace BloodCare.Domain.Entities
 {
     public class Donation : BaseEntity
     {
-        public Donation(int donorId, DateTime donationDate, int milliliters)
+        public Donation(string donorId, int milliliters)
         {
             DonorId = donorId;
-            DonationDate = donationDate;
             Milliliters = milliliters;
 
             CreatedAt = DateTime.Now;
         }
 
-        public int DonorId { get; private set; }
-        public DateTime DonationDate { get; private set; }
+        public string DonorId { get; private set; }
         public int Milliliters { get; private set; }
+
+        public bool ValidateMilliliters()
+        {
+            return Milliliters is >= 420 and <= 470;
+        }
     }
 }

@@ -1,7 +1,5 @@
 ﻿using BloodCare.Domain.Base;
 using BloodCare.Domain.Enums;
-using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
 
 namespace BloodCare.Domain.Entities
 {
@@ -29,21 +27,38 @@ namespace BloodCare.Domain.Entities
         public string Gender { get; private set; }
         public double Weight { get; private set; }
 
-        [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
         public DateTime DateOfBirth { get; private set; }
 
-        [BsonRepresentation(BsonType.String)]
         public BloodType BloodType { get; private set; }
 
-        [BsonRepresentation(BsonType.String)]
         public RhFactor RhFactor { get; private set; }
 
-        [BsonRepresentation(BsonType.String)]
-        public DonorSituation Situation { get; private set; }
+        public DonorSituation Situation { get; set; }
 
-        [BsonDateTimeOptions(Kind = DateTimeKind.Utc)]
-        public DateTime UpdatedAt { get; private set; }
+        public DateTime UpdatedAt { get; set; }
 
         public Address Address { get; set; }
+
+        public bool CanDonate()
+        {
+            var age = CalculateAge(DateOfBirth);
+            if (age < 18)
+                return false;
+
+            if (Weight < 50.0)
+                return false;
+
+            return true;
+        }
+
+        private int CalculateAge(DateTime dateOfBirth)
+        {
+            var age = DateTime.Today.Year - dateOfBirth.Year;
+
+            if (DateTime.Today < dateOfBirth.AddYears(age))
+                age--;
+
+            return age;
+        }
     }
 }

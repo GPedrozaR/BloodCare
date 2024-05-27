@@ -1,4 +1,10 @@
 ﻿using BloodCare.Application.Commands.Donors.CreateDonor;
+using BloodCare.Domain.Repositories;
+using BloodCare.Infrastructure.Persistence;
+using BloodCare.Infrastructure.Persistence.Repositories;
+using Microsoft.Extensions.Options;
+using Microsoft.OpenApi.Models;
+using MongoDB.Driver;
 
 namespace BloodCare.API.Extensions
 {
