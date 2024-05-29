@@ -1,15 +1,15 @@
-﻿using MongoDB.Bson;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 
 namespace BloodCare.Domain.Repositories
 {
-    public interface IRepository<TDomain> where TDomain : class
+    public interface IRepository<T> where T : class
     {
-        Task<IEnumerable<TDomain>> GetAllAsync();
-        Task<IEnumerable<TDomain>> GetAllByQueryAsync(Expression<Func<TDomain, bool>>? filterExpression = default);
-        Task<TDomain> GetFirstOrDefault(Expression<Func<TDomain, bool>>? filterExpression = default);
-        Task<TDomain> GetByIdAsync(string id);
-        Task UpsertAsync(string id, TDomain entity);
+        Task<IEnumerable<T>> GetAllAsync();
+        Task<IEnumerable<T>> GetAllByQueryAsync(Expression<Func<T, bool>>? filterExpression = default);
+        Task<T> GetFirstByQueryAsync(Expression<Func<T, bool>>? filterExpression = default);
+        Task<T> GetByIdAsync(string id);
+        Task UpdateAsync(string id, T entity);
+        Task InsertAsync(T entity);
         Task DeleteAsync(string id);
     }
 }

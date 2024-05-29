@@ -20,7 +20,7 @@ namespace BloodCare.Domain.Entities
 
         public int Milliliters { get; private set; }
 
-        public DateTime UpdatedAt { get; private set; }
+        public DateTime UpdatedAt { get; set; }
 
         public void UpdateMilliliters(int milliliters)
         {
