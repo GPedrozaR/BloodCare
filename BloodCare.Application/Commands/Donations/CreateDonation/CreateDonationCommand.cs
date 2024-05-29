@@ -1,7 +1,6 @@
 ﻿using BloodCare.Application.Abstractions;
 using BloodCare.Domain.Entities;
 using MediatR;
-using MongoDB.Bson;
 
 namespace BloodCare.Application.Commands.Donations.CreateDonation
 {

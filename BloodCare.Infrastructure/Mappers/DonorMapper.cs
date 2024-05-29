@@ -2,7 +2,6 @@
 using BloodCare.Domain.Interfaces;
 using BloodCare.Infrastructure.MongoDbEntities.Entities;
 using MongoDB.Bson;
-using System.Linq.Expressions;
 
 namespace BloodCare.Infrastructure.Mappers
 {
@@ -12,7 +11,6 @@ namespace BloodCare.Infrastructure.Mappers
         {
             return new DonorMongoDb
             {
-                Id = ObjectId.Parse(donor.Id),
                 FullName = donor.FullName,
                 Email = donor.Email,
                 Cpf = donor.Cpf,
@@ -45,11 +43,6 @@ namespace BloodCare.Infrastructure.Mappers
                 UpdatedAt = donorMongo.UpdatedAt,
                 Situation = donorMongo.Situation
             };
-        }
-
-        public Expression<Func<TInfrastructure, bool>> ToInfrastructureFilter(Expression<Func<TDomain, bool>> domainFilter)
-        {
-            return Mapper.Map<Expression<Func<TInfrastructure, bool>>>(domainFilter);
         }
     }
 }

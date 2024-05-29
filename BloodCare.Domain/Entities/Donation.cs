@@ -1,5 +1,4 @@
 ﻿using BloodCare.Domain.Base;
-using MongoDB.Bson;
 
 namespace BloodCare.Domain.Entities
 {

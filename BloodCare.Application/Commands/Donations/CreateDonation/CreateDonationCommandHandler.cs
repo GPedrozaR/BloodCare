@@ -2,7 +2,6 @@
 using BloodCare.Domain.Entities;
 using BloodCare.Domain.Repositories;
 using MediatR;
-using MongoDB.Bson;
 
 namespace BloodCare.Application.Commands.Donations.CreateDonation
 {
@@ -21,11 +20,11 @@ namespace BloodCare.Application.Commands.Donations.CreateDonation
 
         public async Task<Result<Donation>> Handle(CreateDonationCommand request, CancellationToken cancellationToken)
         {
-            var donor = await _donorRepository.AsQueryable(d => d.Id == request.DonorId && d.Situation == Domain.Enums.DonorSituation.Active);
-            if (donor is null || !donor.First().CanDonate())
+            var donor = await _donorRepository.GetFirstByQueryAsync(d => d.Id == request.DonorId && d.Situation == Domain.Enums.DonorSituation.Active);
+            if (donor is null || !donor.CanDonate())
                 return Result<Donation>.Failure();
 
-            var donations = await _donationRepository.AsQueryable(x => x.DonorId == request.DonorId);
+            var donations = await _donationRepository.GetAllByQueryAsync(x => x.DonorId == request.DonorId);
             
             var lastDonation = donations?.OrderBy(d => d.CreatedAt).LastOrDefault();
             if (lastDonation is not null)
@@ -42,7 +41,7 @@ namespace BloodCare.Application.Commands.Donations.CreateDonation
             if (!donation.ValidateMilliliters()) 
                 return Result<Donation>.Failure();
 
-            await _donationRepository.UpsertAsync(donation.Id, donation);
+            await _donationRepository.InsertAsync(donation);
 
             await UpdateBloodStock(request, donor);
 
@@ -51,13 +50,13 @@ namespace BloodCare.Application.Commands.Donations.CreateDonation
 
         private async Task UpdateBloodStock(CreateDonationCommand request, Donor donor)
         {
-            var bloodStock = await _bloodStockRepository.GetFirstOrDefaultByQueryAsync(bs => bs.RhFactor == donor.RhFactor && bs.BloodType == donor.BloodType);
+            var bloodStock = await _bloodStockRepository.GetFirstByQueryAsync(bs => bs.RhFactor == donor.RhFactor && bs.BloodType == donor.BloodType);
             if (bloodStock is null)
                 bloodStock = new BloodStock(donor.BloodType, donor.RhFactor, request.Milliliters);
             else
                 bloodStock.UpdateMilliliters(request.Milliliters);
 
-            await _bloodStockRepository.UpsertAsync(bloodStock.Id, bloodStock);
+            await _bloodStockRepository.InsertAsync(bloodStock);
         }
     }
 }

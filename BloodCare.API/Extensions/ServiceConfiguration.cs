@@ -1,5 +1,9 @@
 ﻿using BloodCare.Application.Commands.Donors.CreateDonor;
+using BloodCare.Domain.Entities;
+using BloodCare.Domain.Interfaces;
 using BloodCare.Domain.Repositories;
+using BloodCare.Infrastructure.Mappers;
+using BloodCare.Infrastructure.MongoDbEntities.Entities;
 using BloodCare.Infrastructure.Persistence;
 using BloodCare.Infrastructure.Persistence.Repositories;
 using Microsoft.Extensions.Options;
@@ -30,9 +34,6 @@ namespace BloodCare.API.Extensions
                     }
                 });
             });
-
-            builder.Services.AddMediatR(op => op.RegisterServicesFromAssemblyContaining(typeof(CreateDonorCommand)));
-
 
             return builder;
         }
@@ -65,6 +66,12 @@ namespace BloodCare.API.Extensions
             builder.Services.AddScoped<IDonorRepository, DonorRepository>();
             builder.Services.AddScoped<IDonationRepository, DonationRepository>();
             builder.Services.AddScoped<IBloodStockRepository, BloodStockRepository>();
+
+            builder.Services.AddMediatR(op => op.RegisterServicesFromAssemblyContaining(typeof(CreateDonorCommand)));
+
+            builder.Services.AddSingleton<IMapper<Donor, DonorMongoDb>, DonorMapper>();
+            builder.Services.AddSingleton<IMapper<Donation, DonationMongoDb>, DonationMapper>();
+            builder.Services.AddSingleton<IMapper<BloodStock, BloodStockMongoDb>, BloodStockMapper>();
 
             return builder.Services;
         }
