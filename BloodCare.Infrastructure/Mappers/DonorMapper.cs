@@ -27,7 +27,7 @@ namespace BloodCare.Infrastructure.Mappers
 
         public Donor ToDomain(DonorMongoDb donorMongo)
         {
-            return new Donor(
+            var donorDomain = new Donor(
                 donorMongo.FullName,
                 donorMongo.Email,
                 donorMongo.DateOfBirth,
@@ -37,12 +37,14 @@ namespace BloodCare.Infrastructure.Mappers
                 donorMongo.BloodType,
                 donorMongo.RhFactor,
                 donorMongo.Address
-            )
-            {
-                Id = donorMongo.Id.ToString(),
-                UpdatedAt = donorMongo.UpdatedAt,
-                Situation = donorMongo.Situation
-            };
+            );
+
+            donorDomain.SetId(donorMongo.Id.ToString());
+            donorDomain.SetCreatedAt(donorMongo.CreatedAt);
+            donorDomain.SetUpdatedAt(donorMongo.UpdatedAt);
+            donorDomain.SetSituation(donorMongo.Situation);
+
+            return donorDomain;
         }
     }
 }

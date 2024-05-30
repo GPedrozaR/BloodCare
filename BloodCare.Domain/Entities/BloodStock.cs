@@ -20,12 +20,18 @@ namespace BloodCare.Domain.Entities
 
         public int Milliliters { get; private set; }
 
-        public DateTime UpdatedAt { get; set; }
+        public DateTime UpdatedAt { get; private set; }
+
+        public void SetUpdatedAt(DateTime date)
+        {
+            UpdatedAt = date;
+        }
 
         public void UpdateMilliliters(int milliliters)
         {
             Milliliters += milliliters;
-            UpdatedAt = DateTime.UtcNow;
+
+            SetUpdatedAt(DateTime.UtcNow);
         }
     }
 }

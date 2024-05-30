@@ -33,11 +33,21 @@ namespace BloodCare.Domain.Entities
 
         public RhFactor RhFactor { get; private set; }
 
-        public DonorSituation Situation { get; set; }
+        public DonorSituation Situation { get; private set; }
 
-        public DateTime UpdatedAt { get; set; }
+        public DateTime UpdatedAt { get; private set; }
 
-        public Address Address { get; set; }
+        public Address Address { get; private set; }
+
+        public void SetSituation(DonorSituation situation)
+        {
+            Situation = situation;
+        }
+
+        public void SetUpdatedAt(DateTime date)
+        {
+            UpdatedAt = date;
+        }
 
         public bool CanDonate()
         {
@@ -51,7 +61,7 @@ namespace BloodCare.Domain.Entities
             return true;
         }
 
-        private int CalculateAge(DateTime dateOfBirth)
+        private static int CalculateAge(DateTime dateOfBirth)
         {
             var age = DateTime.Today.Year - dateOfBirth.Year;
 

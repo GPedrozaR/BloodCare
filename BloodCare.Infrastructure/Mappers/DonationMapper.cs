@@ -18,14 +18,11 @@ namespace BloodCare.Infrastructure.Mappers
 
         public Donation ToDomain(DonationMongoDb donationMongo)
         {
-            return new Donation(
-                donationMongo.DonorId.ToString(),
-                donationMongo.Milliliters)
-            {
-                Id = donationMongo.Id.ToString(),
-                CreatedAt = donationMongo.CreatedAt
-            };
+            var donationDomain = new Donation(donationMongo.DonorId.ToString(), donationMongo.Milliliters);
+            donationDomain.SetId(donationMongo.Id.ToString());
+            donationDomain.SetCreatedAt(donationMongo.CreatedAt);
 
+            return donationDomain;
         }
     }
 }
