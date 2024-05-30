@@ -13,16 +13,11 @@ namespace BloodCare.Infrastructure.Mappers
 
         public BloodStock ToDomain(BloodStockMongoDb bloodStockMongo)
         {
-            return new BloodStock(
-                bloodStockMongo.BloodType,
-                bloodStockMongo.RhFactor,
-                bloodStockMongo.Milliliters
-                )
-            {
-                Id = bloodStockMongo.Id.ToString(),
-                UpdatedAt = bloodStockMongo.UpdatedAt
-            }
-                ;
+            var bloodStockDomain = new BloodStock(bloodStockMongo.BloodType, bloodStockMongo.RhFactor, bloodStockMongo.Milliliters);
+            bloodStockDomain.SetUpdatedAt(bloodStockMongo.UpdatedAt);
+            bloodStockDomain.SetId(bloodStockMongo.Id.ToString());
+            
+            return bloodStockDomain;
         }
     }
 }

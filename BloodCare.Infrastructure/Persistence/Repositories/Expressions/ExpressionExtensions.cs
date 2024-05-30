@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace BloodCare.Infrastructure.Expressions
+namespace BloodCare.Infrastructure.Persistence.Repositories.Expressions
 {
     public static class ExpressionExtensions
     {

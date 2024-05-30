@@ -1,6 +1,6 @@
 ﻿using BloodCare.Domain.Interfaces;
 using BloodCare.Domain.Repositories;
-using BloodCare.Infrastructure.Expressions;
+using BloodCare.Infrastructure.Persistence.Repositories.Expressions;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Linq.Expressions;
